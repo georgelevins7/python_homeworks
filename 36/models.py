@@ -2,7 +2,7 @@ from sqlalchemy import create_engine, String, Integer, Date, Float, ForeignKey, 
 from datetime import date
 from sqlalchemy.orm import Mapped, DeclarativeBase, mapped_column, relationship
 
-engine = create_engine("postgresql+psycopg2://postgres:REVE4TSM@localhost:5432/test", echo=True)
+engine = create_engine("postgresql+psycopg2://postgres:12344321@localhost:5432/test", echo=True)
 
 
 
