@@ -1,4 +1,4 @@
-from app.routers import subjects, students, junction
+from app.routers import subjects, students, junction, users
 from fastapi import FastAPI
 
 app = FastAPI(
@@ -10,3 +10,4 @@ app = FastAPI(
 app.include_router(subjects.router)
 app.include_router(students.router)
 app.include_router(junction.router)
+app.include_router(users.router)

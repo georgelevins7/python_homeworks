@@ -1,7 +1,11 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, DeclarativeBase
+import os
+from dotenv import load_dotenv
 
-db_url = "postgresql+psycopg2://postgres:1234@localhost:5432/test"
+load_dotenv()
+db_url = os.getenv("DATABASE_URL")
+
 engine = create_engine(db_url, echo=True)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
