@@ -46,6 +46,9 @@ class UserResponse(BaseModel):
     created_at: datetime
     role: str
 
+    class Config:
+        from_attributes = True
+
 class UserUpdate(BaseModel):
     username: str | None = Field(default=None, min_length=5, max_length=20, description="Username must be between 5 and 20 characters.")
     email: EmailStr | None = Field(default=None, description="Valid email address.")
@@ -77,6 +80,3 @@ class UserUpdate(BaseModel):
         if not re.match(r"^[a-zA-Z0-9_]+$", username):
             raise ValueError("Username can only contain letters, numbers, and underscores.")
         return username
-
-    class Config:
-        from_attributes = True

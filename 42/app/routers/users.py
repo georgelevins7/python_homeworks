@@ -1,15 +1,27 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, BackgroundTasks
 from app.models.users import User
 from app.database import get_db
 from sqlalchemy.orm import Session
 from app.schemas.users import UserCreate, UserLogin, UserResponse, UserUpdate
-from app.security import create_access_token, hash_password, refresh_access_token, require_admin, verify_password, get_current_user
+from app.security import (
+    create_access_token, 
+    hash_password, 
+    refresh_access_token, 
+    require_admin, 
+    verify_password, 
+    get_current_user)
+import time
 
 router = APIRouter(prefix="/users", tags=["Users"])
 
 
+def send_welcome_email(email: str):
+    print(f"Sending welcome email to {email}")
+    time.sleep(3)
+    print(f"Welcome email sent to {email}")
+
 @router.post("/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
-def create_user(user: UserCreate, db: Session = Depends(get_db)):
+def create_user(user: UserCreate, background_tasks:BackgroundTasks, db: Session = Depends(get_db)):
     existing_user = db.query(User).filter((User.username == user.username) | (User.email == user.email)).first()
     if existing_user:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Username or email already exists")
@@ -20,6 +32,9 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
+
+    background_tasks.add_task(send_welcome_email, new_user.email)
+
     return new_user
 
 @router.post("/login")
