@@ -57,5 +57,5 @@ response = chain.invoke(
         }
         )
 
-print(response.model_dump_json(indent=2))
+print(response)
 print(type(response))
