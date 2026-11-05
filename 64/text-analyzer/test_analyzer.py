@@ -7,7 +7,7 @@ from analyzer import (
 
 
 def test_count_words():
-    assert count_words("Hello world Python") == 5
+    assert count_words("Hello world Python") == 3
 
 
 def test_count_characters():
